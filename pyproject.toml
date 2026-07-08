@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "regime-shap"
+version = "0.1.0"
+description = "Quantify SHAP feature importance stability across structural breaks in time-series data"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Faith Olan-George"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+keywords = ["SHAP", "explainable AI", "feature importance", "time series", "structural breaks"]
+
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.11",
+    "shap>=0.44",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.1",
+    "black>=23.10",
+    "mypy>=1.6",
+]
+docs = [
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=2.0",
+]
+examples = [
+    "jupyter>=1.0",
+    "xgboost>=2.0",
+    "lightgbm>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/faithcodes-lab/regime-shap"
+Documentation = "https://regime-shap.readthedocs.io"
+Repository = "https://github.com/faithcodes-lab/regime-shap.git"
+Issues = "https://github.com/faithcodes-lab/regime-shap/issues"
+Changelog = "https://github.com/faithcodes-lab/regime-shap/blob/main/CHANGELOG.md"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

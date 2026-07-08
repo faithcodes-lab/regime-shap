@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Olan-George
+    given-names: Faith
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # Add ORCID iD once available
+title: "regime-shap: Quantifying SHAP Feature Importance Stability Across Structural Breaks"
+version: 0.1.0
+date-released: 2026-08-01
+license: MIT
+repository-code: "https://github.com/faithcodes-lab/regime-shap"
+url: "https://regime-shap.readthedocs.io"
+keywords:
+  - SHAP
+  - explainable AI
+  - feature importance
+  - time series
+  - structural breaks
+  - regime analysis
