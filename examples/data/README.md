@@ -25,7 +25,7 @@ section.
 
 ## gb_electricity_demand.csv
 
-Daily Great Britain electricity demand, used by `02_energy_seasonal_demand.ipynb`.
+Daily Great Britain electricity demand, used by `02_energy_demand_regimes.ipynb`.
 
 | Column | Meaning |
 | --- | --- |
@@ -37,7 +37,7 @@ Daily Great Britain electricity demand, used by `02_energy_seasonal_demand.ipynb
 Source: NESO (National Energy System Operator), Historic Demand Data, retrieved
 from the public CKAN API at `api.neso.energy`, which needs no API key. NESO
 publish one half-hourly file per year; the 48 daily settlement periods are
-aggregated to the daily figures above, covering 2016 to 2023. The data are
+aggregated to the daily figures above, covering 2010 to 2025. The data are
 published under the NESO Open Data Licence and are free to reuse with attribution.
 
 To refresh the snapshot, the exact fetch code is shown in the notebook's data

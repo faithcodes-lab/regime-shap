@@ -7,14 +7,15 @@ bundled under `data/`.
 - `01_finance_market_regimes.ipynb` — Finance. An XGBoost model for next-day market volatility
   (the VIX), with regimes found from the data by `detect_breaks`. The drivers **change** in a
   crisis: the stability analysis flags the 2008 to 2009 regime as the unstable outlier.
-- `02_energy_seasonal_demand.ipynb` — Energy. A model for next-day change in Great Britain
-  electricity demand, with regimes **labelled by hand** as the four seasons plus the 2020
-  lockdown. The drivers **hold** across the seasons, and the short lockdown regime is read with
-  bootstrap confidence intervals.
+- `02_energy_demand_regimes.ipynb` — Energy. A day-ahead model for Great Britain electricity
+  demand, with regimes **labelled by hand** as contiguous eras of UK demand history (the
+  higher-demand early 2010s, the efficiency-driven decline, the 2020 lockdown, and the
+  post-lockdown plateau). The drivers **hold** across the eras, and the short lockdown era is
+  read with bootstrap confidence intervals.
 
 Between them the two notebooks cover both ways of supplying regimes (data-driven break detection
-and hand labels) and both kinds of outcome a stability analysis can report (drivers that shift
-and drivers that hold).
+and hand-labelled eras) and both kinds of outcome a stability analysis can report (drivers that
+shift and drivers that hold).
 
 ## Running
 
