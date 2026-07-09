@@ -63,6 +63,11 @@ Repository = "https://github.com/faithcodes-lab/regime-shap.git"
 Issues = "https://github.com/faithcodes-lab/regime-shap/issues"
 Changelog = "https://github.com/faithcodes-lab/regime-shap/blob/main/CHANGELOG.md"
 
+# Only regime_shap is the importable package; space/, examples/, and tests/ are
+# not, so restrict discovery to avoid the flat-layout "multiple packages" error.
+[tool.setuptools.packages.find]
+include = ["regime_shap*"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"
