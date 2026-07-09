@@ -1,10 +1,11 @@
 name: Build documentation
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  # The Sphinx docs site is built starting from the documentation story. Until a
+  # docs/ source tree exists, this workflow is manual-only (workflow_dispatch),
+  # so it does not fail on missing docs. Restore the push/pull_request triggers
+  # on [main] once docs/ is added.
+  workflow_dispatch:
 
 jobs:
   docs:
