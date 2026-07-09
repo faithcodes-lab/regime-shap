@@ -7,18 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Initial package scaffolding via bootstrap-package-repo.sh
-- Core API: `RegimeSHAPAnalyzer` class (to be implemented in 07-regime-shap-tool.md)
-
-## [0.1.0] - YYYY-MM-DD
-
-Initial release.
+The package is in active development. Nothing has been released yet.
 
 ### Added
-- `RegimeSHAPAnalyzer` for per-regime SHAP computation
-- Spearman rank correlation stability metric
-- Bootstrap confidence intervals for small-sample regimes
-- Visualisation helpers (stability heatmap, per-regime summaries)
-- HTML report generation
-- Three example notebooks (UK GDP, stock volatility, energy demand)
+- Package scaffolding and CI (via bootstrap-package-repo.sh).
+- `breaks`: resolve regime specifications (per-row labels, date-range tuples, or a label-to-range mapping) into per-row labels, with optional ruptures-based break detection.
+- `compare`: per-regime SHAP feature importance and rankings, with per-regime sample sizes and a small-sample flag.
+- `stability`: pairwise Spearman rank-correlation matrix, the Akoglu (2018) stability bands, and bootstrap confidence intervals for small regimes.
+
+### Planned
+- `RegimeSHAPAnalyzer` entry point, plotting, and HTML/CSV report modules.
+- Example notebooks (macroeconomic, financial, energy).
+- Documentation site and the first PyPI release (v0.1.0).
