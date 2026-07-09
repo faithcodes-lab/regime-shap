@@ -2,41 +2,64 @@
 
 > Quantify SHAP feature importance stability across structural breaks in time-series data.
 
-[![PyPI version](https://img.shields.io/pypi/v/regime-shap)](https://pypi.org/project/regime-shap/)
-[![Documentation Status](https://readthedocs.org/projects/regime-shap/badge/?version=latest)](https://regime-shap.readthedocs.io/en/latest/?badge=latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-`regime-shap` extends SHAP feature importance analysis to time-series with structural breaks. Given a pre-trained tree model and a list of regime boundaries, it quantifies how feature importance rankings change across regimes — surfacing instability that may matter for trustworthy interpretation.
+**Status: pre-release, in active development. Not yet published to PyPI, and the public API is not final.**
 
-## Quick Example
+`regime-shap` extends SHAP feature importance analysis to time-series with structural breaks. Given a pre-trained tree model, a feature matrix, and a set of regimes, it quantifies how the model's feature importance rankings change across regimes, surfacing instability that may matter for trustworthy interpretation.
+
+## Development status
+
+Built so far:
+- `breaks`: turn regime specifications into per-row regime labels (plus optional break detection).
+- `compare`: per-regime SHAP feature importance and rankings, with small-sample flagging.
+- `stability`: pairwise Spearman stability matrix, Akoglu (2018) bands, and bootstrap confidence intervals.
+- `plots`: global and per-regime importance figures, and the banded stability heatmap.
+- `report`: self-contained HTML report plus dict and CSV export.
+- `RegimeSHAPAnalyzer`: a single high-level entry point that ties the modules together.
+
+Planned (not yet implemented):
+- Example notebooks and a Sphinx documentation site.
+- A first PyPI release.
+
+## Usage
 
 ```python
-import pandas as pd
 from regime_shap import RegimeSHAPAnalyzer
 
-# Assume: X is your feature DataFrame, model is a pre-trained XGBoost/LightGBM model
-# regimes is a dict mapping regime labels to (start_date, end_date) tuples
+# model is a fitted tree model, X is the feature matrix, regimes is one label per row
+analyzer = RegimeSHAPAnalyzer(model, X, regimes)
 
-analyzer = RegimeSHAPAnalyzer(model=model, X=X, regimes=regimes)
-analyzer.compute()
-stability_matrix = analyzer.stability_matrix()  # 6x6 Spearman rho
-analyzer.plot_stability_heatmap()
+analyzer.stability_matrix()      # regime-by-regime Spearman correlation of importance rankings
+analyzer.stability_classified()  # each regime pair with its Akoglu (2018) stability band
+analyzer.plot_stability()        # the banded stability heatmap
+analyzer.to_html(title="...")    # a self-contained report of every result table
 ```
+
+The building-block functions in `regime_shap.breaks`, `regime_shap.compare`, and `regime_shap.stability` are also available directly if you want finer control.
+
+## Supported models
+
+`regime-shap` currently supports tree-based models (for example XGBoost, LightGBM, and scikit-learn tree ensembles) through SHAP's `TreeExplainer`. This is a deliberate choice: `TreeExplainer` computes exact SHAP values quickly, which is what makes the bootstrap confidence intervals feasible, since they recompute SHAP up to a thousand times per regime.
+
+The stability methodology itself is model-agnostic. The comparison, stability, plotting, and report steps operate on SHAP values alone and never inspect the model, so only the SHAP computation is tree-specific.
+
+Support for other model types through pluggable explainers (for example `KernelExplainer` for arbitrary models, or `LinearExplainer` for linear ones) is a possible future extension, tracked in [issue #8](https://github.com/faithcodes-lab/regime-shap/issues/8). The honest caveat is that the bootstrap confidence intervals become expensive and approximate for non-tree models, because general explainers are slower and introduce sampling variance.
 
 ## Installation
 
+Not yet on PyPI. For development, install from source:
+
 ```bash
-pip install regime-shap
+git clone https://github.com/faithcodes-lab/regime-shap.git
+cd regime-shap
+pip install -e ".[dev]"
 ```
-
-## Documentation
-
-Full documentation at https://regime-shap.readthedocs.io/
 
 ## Origin
 
-This package originated as part of an MSc dissertation at UWE Bristol investigating SHAP stability across UK economic regimes (Brexit, COVID-19). The methodology was extracted into a standalone tool for general use across domains including macroeconomics, finance, and energy.
+This package is being extracted from an MSc dissertation at UWE Bristol investigating SHAP stability across UK economic regimes (the Global Financial Crisis, Brexit, and COVID-19). The methodology is being generalised into a standalone tool for use across domains such as macroeconomics, finance, and energy.
 
 If you use `regime-shap` in research, please cite:
 
@@ -51,4 +74,4 @@ If you use `regime-shap` in research, please cite:
 
 ## Licence
 
-MIT — see `LICENSE` for details.
+MIT, see `LICENSE` for details.

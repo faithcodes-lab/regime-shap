@@ -41,6 +41,10 @@ dev = [
     "ruff>=0.1",
     "black>=23.10",
     "mypy>=1.6",
+    "scikit-learn>=1.3",
+]
+detection = [
+    "ruptures>=1.1",
 ]
 docs = [
     "sphinx>=7.0",
@@ -48,8 +52,11 @@ docs = [
 ]
 examples = [
     "jupyter>=1.0",
+    "nbconvert>=7.0",
+    "ipywidgets>=8.0",  # silences the tqdm/IProgress warning shap emits in notebooks
     "xgboost>=2.0",
     "lightgbm>=4.0",
+    "ruptures>=1.1",  # the notebooks use detect_breaks to find regimes
 ]
 
 [project.urls]
@@ -58,6 +65,11 @@ Documentation = "https://regime-shap.readthedocs.io"
 Repository = "https://github.com/faithcodes-lab/regime-shap.git"
 Issues = "https://github.com/faithcodes-lab/regime-shap/issues"
 Changelog = "https://github.com/faithcodes-lab/regime-shap/blob/main/CHANGELOG.md"
+
+# Only regime_shap is the importable package; space/, examples/, and tests/ are
+# not, so restrict discovery to avoid the flat-layout "multiple packages" error.
+[tool.setuptools.packages.find]
+include = ["regime_shap*"]
 
 [tool.ruff]
 line-length = 100
