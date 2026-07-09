@@ -14,8 +14,10 @@ The package is in active development. Nothing has been released yet.
 - `breaks`: resolve regime specifications (per-row labels, date-range tuples, or a label-to-range mapping) into per-row labels, with optional ruptures-based break detection.
 - `compare`: per-regime SHAP feature importance and rankings, with per-regime sample sizes and a small-sample flag.
 - `stability`: pairwise Spearman rank-correlation matrix, the Akoglu (2018) stability bands, and bootstrap confidence intervals for small regimes.
+- `plots`: global importance bar, per-regime importance heatmap, and the Akoglu-banded stability heatmap with small-regime flags.
+- `report`: self-contained HTML report plus dict and CSV export of the result tables.
+- `RegimeSHAPAnalyzer`: the one-call entry point that ties the modules together, exported from the package top level.
 
 ### Planned
-- `RegimeSHAPAnalyzer` entry point, plotting, and HTML/CSV report modules.
 - Example notebooks (macroeconomic, financial, energy).
 - Documentation site and the first PyPI release (v0.1.0).
