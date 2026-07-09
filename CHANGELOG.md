@@ -18,6 +18,9 @@ The package is in active development. Nothing has been released yet.
 - `report`: self-contained HTML report plus dict and CSV export of the result tables.
 - `RegimeSHAPAnalyzer`: the one-call entry point that ties the modules together, exported from the package top level.
 
+### Documentation
+- Documented the supported-model boundary: the package is tree-only via `TreeExplainer`, the stability methodology is model-agnostic, and pluggable explainers for other models are a possible future extension (tracked in issue #8).
+
 ### Planned
 - Example notebooks (macroeconomic, financial, energy).
 - Documentation site and the first PyPI release (v0.1.0).
