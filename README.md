@@ -15,25 +15,37 @@ Built so far:
 - `breaks`: turn regime specifications into per-row regime labels (plus optional break detection).
 - `compare`: per-regime SHAP feature importance and rankings, with small-sample flagging.
 - `stability`: pairwise Spearman stability matrix, Akoglu (2018) bands, and bootstrap confidence intervals.
+- `plots`: global and per-regime importance figures, and the banded stability heatmap.
+- `report`: self-contained HTML report plus dict and CSV export.
+- `RegimeSHAPAnalyzer`: a single high-level entry point that ties the modules together.
 
 Planned (not yet implemented):
-- `RegimeSHAPAnalyzer`, a single high-level entry point.
-- Plotting and HTML/CSV report helpers.
-- Example notebooks, documentation, and a first PyPI release.
+- Example notebooks and a Sphinx documentation site.
+- A first PyPI release.
 
-## Planned API
-
-The intended high-level interface, once the analyzer is built, is roughly:
+## Usage
 
 ```python
-from regime_shap import RegimeSHAPAnalyzer  # not yet implemented
+from regime_shap import RegimeSHAPAnalyzer
 
-analyzer = RegimeSHAPAnalyzer(model=model, X=X, regimes=regimes)
-stability = analyzer.stability_matrix()
-analyzer.plot_stability()
+# model is a fitted tree model, X is the feature matrix, regimes is one label per row
+analyzer = RegimeSHAPAnalyzer(model, X, regimes)
+
+analyzer.stability_matrix()      # regime-by-regime Spearman correlation of importance rankings
+analyzer.stability_classified()  # each regime pair with its Akoglu (2018) stability band
+analyzer.plot_stability()        # the banded stability heatmap
+analyzer.to_html(title="...")    # a self-contained report of every result table
 ```
 
-Until then, the building-block functions in `regime_shap.breaks`, `regime_shap.compare`, and `regime_shap.stability` are available.
+The building-block functions in `regime_shap.breaks`, `regime_shap.compare`, and `regime_shap.stability` are also available directly if you want finer control.
+
+## Supported models
+
+`regime-shap` currently supports tree-based models (for example XGBoost, LightGBM, and scikit-learn tree ensembles) through SHAP's `TreeExplainer`. This is a deliberate choice: `TreeExplainer` computes exact SHAP values quickly, which is what makes the bootstrap confidence intervals feasible, since they recompute SHAP up to a thousand times per regime.
+
+The stability methodology itself is model-agnostic. The comparison, stability, plotting, and report steps operate on SHAP values alone and never inspect the model, so only the SHAP computation is tree-specific.
+
+Support for other model types through pluggable explainers (for example `KernelExplainer` for arbitrary models, or `LinearExplainer` for linear ones) is a possible future extension, tracked in [issue #8](https://github.com/faithcodes-lab/regime-shap/issues/8). The honest caveat is that the bootstrap confidence intervals become expensive and approximate for non-tree models, because general explainers are slower and introduce sampling variance.
 
 ## Installation
 
