@@ -52,8 +52,11 @@ docs = [
 ]
 examples = [
     "jupyter>=1.0",
+    "nbconvert>=7.0",
+    "ipywidgets>=8.0",  # silences the tqdm/IProgress warning shap emits in notebooks
     "xgboost>=2.0",
     "lightgbm>=4.0",
+    "ruptures>=1.1",  # the notebooks use detect_breaks to find regimes
 ]
 
 [project.urls]
