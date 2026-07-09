@@ -25,7 +25,18 @@ from regime_shap import breaks, compare, plots, report, stability
 
 
 class RegimeSHAPAnalyzer:
-    """Regime-aware SHAP feature-importance stability analysis for a tree model."""
+    """Regime-aware SHAP feature-importance stability analysis for a tree model.
+
+    Supported models are tree-based (XGBoost, LightGBM, or scikit-learn tree
+    ensembles), computed through ``shap.TreeExplainer``. This is deliberate:
+    TreeExplainer is exact and fast, which is what makes the bootstrap
+    confidence intervals feasible, since they recompute SHAP many times per
+    regime. The stability methodology itself is model-agnostic (everything
+    downstream operates on SHAP arrays, not the model), so support for other
+    model types via pluggable explainers is a possible future extension, with
+    the caveat that the bootstrap becomes expensive and approximate for
+    non-tree models.
+    """
 
     def __init__(
         self,

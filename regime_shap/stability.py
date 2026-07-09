@@ -96,7 +96,9 @@ def bootstrap_rankings(
     already has, it does not remove it.
 
     Args:
-        model: A fitted tree model compatible with ``shap.TreeExplainer``.
+        model: A fitted tree model compatible with ``shap.TreeExplainer``. The
+            explainer is recomputed once per resample, so its speed matters here;
+            this exact, fast path is the reason the package is tree-only for now.
         X_regime: The feature rows belonging to one regime.
         n_bootstrap: Number of resamples.
         random_state: Seed, so the result is reproducible.
