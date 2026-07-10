@@ -1,16 +1,17 @@
-name: Build documentation
+name: Documentation
 
 on:
-  # The Sphinx docs site is built starting from the documentation story. Until a
-  # docs/ source tree exists, this workflow is manual-only (workflow_dispatch),
-  # so it does not fail on missing docs. Restore the push/pull_request triggers
-  # on [main] once docs/ is added.
-  workflow_dispatch:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
 
 jobs:
-  docs:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -27,3 +28,26 @@ jobs:
 
       - name: Build docs
         run: sphinx-build -b html -W docs docs/_build/html
+
+      # Only the deploy from main needs the artifact; building on PRs just verifies.
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/_build/html
+
+  deploy:
+    # Publish to GitHub Pages only when main moves; PRs and develop just build.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
