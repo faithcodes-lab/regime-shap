@@ -2,10 +2,14 @@
 
 > Quantify SHAP feature importance stability across structural breaks in time-series data.
 
+[![CI](https://github.com/faithcodes-lab/regime-shap/actions/workflows/ci.yml/badge.svg)](https://github.com/faithcodes-lab/regime-shap/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://faithcodes-lab.github.io/regime-shap/)
 
 **Status: pre-release, in active development. Not yet published to PyPI, and the public API is not final.**
+
+Documentation: <https://faithcodes-lab.github.io/regime-shap/>
 
 `regime-shap` extends SHAP feature importance analysis to time-series with structural breaks. Given a pre-trained tree model, a feature matrix, and a set of regimes, it quantifies how the model's feature importance rankings change across regimes, surfacing instability that may matter for trustworthy interpretation.
 
