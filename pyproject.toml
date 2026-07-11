@@ -62,7 +62,7 @@ examples = [
 
 [project.urls]
 Homepage = "https://github.com/faithcodes-lab/regime-shap"
-Documentation = "https://regime-shap.readthedocs.io"
+Documentation = "https://faithcodes-lab.github.io/regime-shap/"
 Repository = "https://github.com/faithcodes-lab/regime-shap.git"
 Issues = "https://github.com/faithcodes-lab/regime-shap/issues"
 Changelog = "https://github.com/faithcodes-lab/regime-shap/blob/main/CHANGELOG.md"
