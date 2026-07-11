@@ -3,13 +3,19 @@ message: "If you use this software, please cite it as below."
 authors:
   - family-names: Olan-George
     given-names: Faith
-    # orcid: "https://orcid.org/0000-0000-0000-0000"  # Add ORCID iD once available
+    orcid: "https://orcid.org/0009-0003-1324-3706"
 title: "regime-shap: Quantifying SHAP Feature Importance Stability Across Structural Breaks"
+abstract: >-
+  regime-shap is a Python package that measures how stable a tree model's SHAP
+  feature importance is across regimes (distinct time periods such as structural
+  breaks). It computes per-regime mean absolute SHAP importance, compares the
+  rankings with Spearman rank correlation, classifies the result using the Akoglu
+  (2018) stability bands, and attaches bootstrap confidence intervals for short
+  regimes.
 version: 0.1.0
-date-released: 2026-08-01
 license: MIT
 repository-code: "https://github.com/faithcodes-lab/regime-shap"
-url: "https://regime-shap.readthedocs.io"
+url: "https://faithcodes-lab.github.io/regime-shap/"
 keywords:
   - SHAP
   - explainable AI
@@ -17,3 +23,4 @@ keywords:
   - time series
   - structural breaks
   - regime analysis
+# date-released and doi are added when the first release is cut and the Zenodo DOI is minted.
