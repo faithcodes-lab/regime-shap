@@ -31,6 +31,29 @@ token. On https://pypi.org, add a Trusted Publisher for the project with:
 Alternatively, add a `PYPI_API_TOKEN` repository secret and switch `publish.yml` to token auth
 (the token lines are already there, commented out).
 
+## 2b. Rehearse on TestPyPI (recommended)
+
+TestPyPI is a throwaway sandbox. Rehearsing there first confirms the publish mechanism works and
+lets you see the rendered project page before the real, irreversible upload. The
+`publish-testpypi.yml` workflow does this on demand, and gives each run a unique dev version so it
+can be repeated.
+
+One-time setup:
+
+- Sign in at https://test.pypi.org with your GitHub account and turn on 2FA.
+- Add a pending publisher on TestPyPI (Publishing, then Add a pending publisher):
+  - Project name: `regime-shap`
+  - Owner: `faithcodes-lab`
+  - Repository name: `regime-shap`
+  - Workflow name: `publish-testpypi.yml`
+  - Environment name: `testpypi`
+- In the GitHub repo Settings, under Environments, create one named `testpypi`.
+
+To rehearse:
+
+- In the repo, open the Actions tab, choose "Rehearse publish (TestPyPI)", and Run workflow.
+- When it finishes, check the page at https://test.pypi.org/project/regime-shap/.
+
 ## 3. Cut the release
 
 - Promote `develop` to `main` via a pull request, so `main` holds the release state.
