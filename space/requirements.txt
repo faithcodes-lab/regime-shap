@@ -1,0 +1,4 @@
+# The package is pre-release, so install it from source. Switch this to
+# "regime-shap" once it is published to PyPI. Gradio is provided by the Space SDK.
+regime-shap @ git+https://github.com/faithcodes-lab/regime-shap.git@main
+xgboost>=2.0
