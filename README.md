@@ -63,7 +63,7 @@ pip install -e ".[dev]"
 
 ## Origin
 
-This package is being extracted from an MSc dissertation at UWE Bristol investigating SHAP stability across UK economic regimes (the Global Financial Crisis, Brexit, and COVID-19). The methodology is being generalised into a standalone tool for use across domains such as macroeconomics, finance, and energy.
+This package generalises a SHAP stability methodology, first developed for analysing UK economic regimes (the Global Financial Crisis, Brexit, and COVID-19), into a standalone, domain-agnostic tool. Its examples span finance and energy as well as macroeconomics.
 
 If you use `regime-shap` in research, please cite:
 
