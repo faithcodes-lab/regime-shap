@@ -1,0 +1,28 @@
+{
+  "title": "regime-shap: Quantifying SHAP Feature Importance Stability Across Structural Breaks",
+  "description": "regime-shap is a Python package that measures how stable a tree model's SHAP feature importance is across regimes (distinct time periods such as structural breaks). It computes per-regime mean absolute SHAP importance, compares the rankings with Spearman rank correlation, classifies the result using the Akoglu (2018) stability bands, and attaches bootstrap confidence intervals for short regimes.",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Olan-George, Faith",
+      "orcid": "0009-0003-1324-3706"
+    }
+  ],
+  "keywords": [
+    "SHAP",
+    "explainable AI",
+    "feature importance",
+    "time series",
+    "structural breaks",
+    "regime analysis"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/faithcodes-lab/regime-shap",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}

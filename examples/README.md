@@ -4,10 +4,10 @@ Worked examples showing `regime-shap` across genuinely different public datasets
 is demonstrated beyond any single domain. Each notebook is self-contained and uses public data
 bundled under `data/`.
 
-- `01_finance_market_regimes.ipynb` — Finance. An XGBoost model for next-day market volatility
+- `01_finance_market_regimes.ipynb`: Finance. An XGBoost model for next-day market volatility
   (the VIX), with regimes found from the data by `detect_breaks`. The drivers **change** in a
   crisis: the stability analysis flags the 2008 to 2009 regime as the unstable outlier.
-- `02_energy_demand_regimes.ipynb` — Energy. A day-ahead model for Great Britain electricity
+- `02_energy_demand_regimes.ipynb`: Energy. A day-ahead model for Great Britain electricity
   demand, with regimes **labelled by hand** as contiguous eras of UK demand history (the
   higher-demand early 2010s, the efficiency-driven decline, the 2020 lockdown, and the
   post-lockdown plateau). The drivers **hold** across the eras, and the short lockdown era is
