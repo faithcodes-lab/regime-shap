@@ -23,10 +23,6 @@ Built so far:
 - `report`: self-contained HTML report plus dict and CSV export.
 - `RegimeSHAPAnalyzer`: a single high-level entry point that ties the modules together.
 
-Planned (not yet implemented):
-- Example notebooks and a Sphinx documentation site.
-- A first PyPI release.
-
 ## Usage
 
 ```python
