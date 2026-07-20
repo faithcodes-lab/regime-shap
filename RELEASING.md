@@ -9,7 +9,9 @@ be a real release.
 - CI is green on `develop` and `main`, and the docs build cleanly.
 - `pyproject.toml` and `regime_shap/__init__.py` declare the same version.
 - In `CHANGELOG.md`, move the `[Unreleased]` entries under a new `[0.1.0]` heading with the date.
-- Update `README.md` and `CHANGELOG.md` wording from pre-release to the released version.
+- In `CHANGELOG.md`, remove the "Nothing has been released yet" line now that a version exists.
+- In `README.md`, replace the "Not yet on PyPI, install from source" Installation block with `pip install regime-shap` as the primary method (keep the source install for contributors), and remove the remaining pre-release wording.
+- In `space/README.md`, update the "pre-release and not yet on PyPI" line to reflect the published release.
 
 ## 1. Connect Zenodo (one time)
 
