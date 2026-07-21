@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-The package is in active development. Nothing has been released yet.
+## [0.1.0] - 2026-07-21
 
 ### Added
 - Package scaffolding and CI (via bootstrap-package-repo.sh).
@@ -22,6 +22,3 @@ The package is in active development. Nothing has been released yet.
 ### Documentation
 - Documented the supported-model boundary: the package is tree-only via `TreeExplainer`, the stability methodology is model-agnostic, and pluggable explainers for other models are a possible future extension (tracked in issue #8).
 - Sphinx documentation site, published on GitHub Pages.
-
-### Planned
-- The first PyPI release (v0.1.0).

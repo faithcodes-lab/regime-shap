@@ -30,4 +30,4 @@ regime-by-regime stability heatmap, the banded classification, and the global fe
 - Source code: https://github.com/faithcodes-lab/regime-shap
 - Documentation: https://faithcodes-lab.github.io/regime-shap/
 
-The package is pre-release and not yet on PyPI, so this Space installs it from source.
+This Space installs regime-shap from source; the package is also available on PyPI (`pip install regime-shap`).
