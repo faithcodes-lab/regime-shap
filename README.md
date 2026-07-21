@@ -3,11 +3,12 @@
 > Quantify SHAP feature importance stability across structural breaks in time-series data.
 
 [![CI](https://github.com/faithcodes-lab/regime-shap/actions/workflows/ci.yml/badge.svg)](https://github.com/faithcodes-lab/regime-shap/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/regime-shap.svg)](https://pypi.org/project/regime-shap/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://faithcodes-lab.github.io/regime-shap/)
 
-**Status: pre-release, in active development. Not yet published to PyPI, and the public API is not final.**
+**Install with `pip install regime-shap`. The package follows Semantic Versioning; during the 0.x series the public API may still change.**
 
 Documentation: <https://faithcodes-lab.github.io/regime-shap/>
 
@@ -49,7 +50,11 @@ Support for other model types through pluggable explainers (for example `KernelE
 
 ## Installation
 
-Not yet on PyPI. For development, install from source:
+```bash
+pip install regime-shap
+```
+
+For development, install from source:
 
 ```bash
 git clone https://github.com/faithcodes-lab/regime-shap.git
