@@ -4,6 +4,7 @@
 
 [![CI](https://github.com/faithcodes-lab/regime-shap/actions/workflows/ci.yml/badge.svg)](https://github.com/faithcodes-lab/regime-shap/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/regime-shap.svg)](https://pypi.org/project/regime-shap/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21472871.svg)](https://doi.org/10.5281/zenodo.21472871)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://faithcodes-lab.github.io/regime-shap/)

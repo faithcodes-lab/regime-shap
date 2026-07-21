@@ -23,4 +23,5 @@ keywords:
   - time series
   - structural breaks
   - regime analysis
-# date-released and doi are added when the first release is cut and the Zenodo DOI is minted.
+date-released: "2026-07-21"
+doi: "10.5281/zenodo.21472871"
