@@ -30,3 +30,8 @@ Python 3.10 or newer. The core dependencies (numpy, pandas, scipy, shap, matplot
 automatically.
 
 A PyPI release is planned, after which `pip install regime-shap` will work directly.
+
+## Versioning and licence
+
+`regime-shap` follows Semantic Versioning; during the 0.x series the public API may change between
+releases. It is released under the MIT licence.
