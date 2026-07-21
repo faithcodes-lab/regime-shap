@@ -67,8 +67,15 @@ correlation strength in Akoglu (2018):
 | unstable | rho at most 0.3 |
 
 The two thresholds (0.3 and 0.6) are the defaults and can be changed. A stable band means the
-model's drivers hold across the two regimes; an unstable band means they have genuinely
+model's drivers hold across the two regimes, and an unstable band means they have genuinely
 reorganised.
+
+Read a stable result carefully. A high stability score shows only that the ranking does not change
+across regimes; it does not by itself show that the explanation is trustworthy. A model that relies
+on very few features can be perfectly stable simply because there is little that could change.
+Stability is therefore most informative when read alongside how concentrated the model's importance
+is: a stable ranking spread across many features is reassuring, while a stable ranking resting on
+one or two features mainly reflects that the model uses very little information.
 
 ## Short regimes and bootstrap confidence intervals
 
@@ -84,9 +91,11 @@ each pair, and reports a percentile interval, by default the 95 percent interval
 floor of observations the package warns that the interval is unreliable.
 
 A wide interval is the honest message that the ranking is uncertain because the data are limited.
-The bootstrap quantifies that uncertainty; it does not remove it. Because the bootstrap recomputes
-SHAP many times, the speed of the explainer matters, which is one reason the package is currently
-tree-only.
+The bootstrap quantifies that uncertainty; it does not remove it. The resampling treats the
+regime's rows as independent, so for strongly autocorrelated data, such as consecutive time steps,
+the interval can understate the true uncertainty and should be read as indicative rather than
+exact. Because the bootstrap recomputes SHAP many times, the speed of the explainer matters, which
+is one reason the package is currently tree-only.
 
 ## Supported models
 
@@ -100,6 +109,20 @@ steps operate on SHAP values alone and never inspect the model, so only the SHAP
 tree-specific. Support for other model types through pluggable explainers is a possible future
 extension, with the honest caveat that the bootstrap confidence intervals become expensive and
 approximate for non-tree models.
+
+## Limitations
+
+Three limitations are worth keeping in mind:
+
+- **Tree models only.** SHAP is computed with `shap.TreeExplainer`, so the package currently
+  supports tree-based models only (see Supported models above). The stability method itself is
+  model-agnostic; only the SHAP step is tree-specific.
+- **Small regimes are uncertain.** A regime with few rows gives a noisy ranking. The bootstrap
+  intervals report that uncertainty but do not remove it, and for autocorrelated data they are
+  indicative rather than exact.
+- **Stability is not the same as trustworthiness.** A high stability score can reflect a model
+  that relies on very few features rather than one that is genuinely robust, so it should be read
+  alongside how concentrated the importance is, not on its own.
 
 ## References
 
