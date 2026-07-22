@@ -8,14 +8,13 @@ time periods such as a crisis, a policy change, or an economic era), and measure
 features the model relies on stay the same across those regimes or reorganise. A model can
 score well overall while resting on unstable foundations, and this package makes that visible.
 
-```{note}
-The package is in active development and has not been released to PyPI yet. The public API may
-still change. See [Installation](installation.md) for installing from source.
-```
+Install it with `pip install regime-shap`. The package follows Semantic Versioning; during the
+0.x series the public API may still change.
 
 ## Where to start
 
-- [Installation](installation.md): install from source while the package is pre-release.
+- [Getting started](getting-started.md): the fastest ways to try it, a browser demo, `pip install`, or the practice datasets.
+- [Installation](installation.md): install from PyPI or from source.
 - [Quickstart](quickstart.md): the one-call `RegimeSHAPAnalyzer` workflow.
 - [Concepts](concepts.md): the method in full, regimes, per-regime SHAP importance, Spearman
   stability, the Akoglu bands, and bootstrap confidence intervals.
@@ -26,6 +25,7 @@ still change. See [Installation](installation.md) for installing from source.
 :maxdepth: 2
 :hidden:
 
+getting-started
 installation
 quickstart
 concepts
