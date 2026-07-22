@@ -1,12 +1,9 @@
 # Installation
 
-`regime-shap` is in active development and has not been released to PyPI yet, so for now install
-it from source.
+Install the latest release from PyPI:
 
 ```bash
-git clone https://github.com/faithcodes-lab/regime-shap.git
-cd regime-shap
-pip install -e .
+pip install regime-shap
 ```
 
 ## Optional extras
@@ -21,15 +18,23 @@ The core install covers the analysis. The optional extras add features you may n
 Install an extra with, for example:
 
 ```bash
-pip install -e ".[detection]"
+pip install "regime-shap[detection]"
+```
+
+## Install from source
+
+For development or the latest unreleased changes, install from the repository:
+
+```bash
+git clone https://github.com/faithcodes-lab/regime-shap.git
+cd regime-shap
+pip install -e ".[dev]"
 ```
 
 ## Requirements
 
 Python 3.10 or newer. The core dependencies (numpy, pandas, scipy, shap, matplotlib) are installed
 automatically.
-
-A PyPI release is planned, after which `pip install regime-shap` will work directly.
 
 ## Versioning and licence
 
