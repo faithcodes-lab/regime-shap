@@ -9,7 +9,7 @@ regimes so a reader does not over-read their rows.
 
 from __future__ import annotations
 
-from collections.abc import Set
+from collections.abc import Set as AbstractSet
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -73,7 +73,7 @@ def plot_per_regime_importance(
 def plot_stability_heatmap(
     matrix: pd.DataFrame,
     *,
-    small_regimes: Set[str] | None = None,
+    small_regimes: AbstractSet[str] | None = None,
     moderate_threshold: float = DEFAULT_MODERATE_THRESHOLD,
     stable_threshold: float = DEFAULT_STABLE_THRESHOLD,
     title: str = "SHAP ranking stability across regimes (Spearman rho)",

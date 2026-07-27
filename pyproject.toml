@@ -59,6 +59,17 @@ examples = [
     "lightgbm>=4.0",
     "ruptures>=1.1",  # the notebooks use detect_breaks to find regimes
 ]
+# A jupyter-free alternative for the notebooks: run them in VS Code's own Jupyter
+# extension instead of Jupyter Notebook/Lab. jupyterlab and ipywidgets both bundle
+# built JS assets with very long generated filenames (up to 235 characters seen in
+# jupyterlab_widgets), which can exceed Windows' default 260-character path limit
+# during install. This extra needs only ipykernel to let VS Code run the notebooks.
+examples-lite = [
+    "ipykernel>=6.25",
+    "xgboost>=2.0",
+    "lightgbm>=4.0",
+    "ruptures>=1.1",  # the notebooks use detect_breaks to find regimes
+]
 
 [project.urls]
 Homepage = "https://github.com/faithcodes-lab/regime-shap"
@@ -75,6 +86,11 @@ include = ["regime_shap*"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+
+[tool.ruff.lint.per-file-ignores]
+# ValueError is deliberate and tested directly (tests/test_breaks.py asserts on it);
+# X.index having the wrong type is a caller input-shape error, not a Python type error.
+"regime_shap/breaks.py" = ["TRY004"]
 
 [tool.black]
 line-length = 100
