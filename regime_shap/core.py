@@ -12,7 +12,7 @@ bootstrap, which by design recomputes SHAP on resampled rows.
 
 from __future__ import annotations
 
-from collections.abc import Set
+from collections.abc import Set as AbstractSet
 from itertools import combinations
 from pathlib import Path
 
@@ -100,7 +100,7 @@ class RegimeSHAPAnalyzer:
             self.labels, small_sample_threshold=self.small_sample_threshold
         )
 
-    def small_regimes(self) -> Set[str]:
+    def small_regimes(self) -> AbstractSet[str]:
         """The set of regime labels flagged small-sample."""
         sizes = self.sample_sizes()
         return set(sizes.loc[sizes["small_sample"], "regime"])

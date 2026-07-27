@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `examples-lite` extra: the example notebooks' model libraries (xgboost, lightgbm, ruptures) plus `ipykernel`, without Jupyter Notebook/Lab. Works around a Windows install failure where Jupyter's bundled JS assets exceed the default 260-character path limit; run the notebooks in VS Code's Jupyter extension instead.
+
+### Documentation
+- Documented the `examples-lite` fallback and the Windows long-path failure it works around.
+
 ## [0.1.0] - 2026-07-21
 
 ### Added
