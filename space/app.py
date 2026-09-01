@@ -1,9 +1,8 @@
 """Hugging Face Spaces demo for regime-shap.
 
 Two preset examples (finance and energy) run the whole package pipeline and show
-the stability heatmap, the banded classification, and global importance.
-The two threshold sliders reclassify the bands live, without recomputing SHAP,
-because the analyzer is cached per dataset.
+the stability heatmap, the banded classification, per-regime importance, and
+global importance. Bands use the package's default thresholds (Akoglu, 2018).
 """
 
 from __future__ import annotations
@@ -93,15 +92,8 @@ def _get(dataset: str) -> RegimeSHAPAnalyzer:
     return _CACHE[dataset]
 
 
-def analyse(dataset: str, moderate_threshold: float, stable_threshold: float):
-    if stable_threshold <= moderate_threshold:
-        raise gr.Error("The stable threshold must be greater than the moderate threshold.")
-
+def analyse(dataset: str):
     an = _get(dataset)
-    # thresholds only affect classification and the heatmap colours, so set them on
-    # the cached analyzer rather than rebuilding it (which would recompute SHAP).
-    an.moderate_threshold = moderate_threshold
-    an.stable_threshold = stable_threshold
 
     fig = an.plot_stability()
     per_regime_fig = an.plot_per_regime()
@@ -112,12 +104,11 @@ def analyse(dataset: str, moderate_threshold: float, stable_threshold: float):
     summary = ", ".join(f"{n} {b}" for b, n in bands.items())
     note = (
         f"**{dataset}**\n\n"
-        f"Regime pairs by band at these thresholds: {summary}.\n\n"
+        f"Regime pairs by band: {summary}.\n\n"
         "Finance regimes are found automatically with `detect_breaks`; energy regimes are "
-        "hand-labelled eras of UK demand history. Move the thresholds to see the bands "
-        "reclassify."
+        "hand-labelled eras of UK demand history."
     )
-    return fig, classified, importance, per_regime_fig, note
+    return fig, classified, per_regime_fig, importance, note
 
 
 with gr.Blocks(title="regime-shap demo") as demo:
@@ -125,7 +116,7 @@ with gr.Blocks(title="regime-shap demo") as demo:
         "# regime-shap\n"
         "Quantify how stable a tree model's SHAP feature importance is across regimes "
         "(distinct time periods such as structural breaks). Pick an example and run the "
-        "analysis, then adjust the stability thresholds below to relabel the result.\n\n"
+        "analysis.\n\n"
         "Source: [github.com/faithcodes-lab/regime-shap](https://github.com/faithcodes-lab/regime-shap) "
         "· Docs: [faithcodes-lab.github.io/regime-shap](https://faithcodes-lab.github.io/regime-shap/)"
     )
@@ -141,6 +132,20 @@ with gr.Blocks(title="regime-shap demo") as demo:
                 table = gr.Dataframe(
                     label="Regime pairs and stability bands", wrap=True, max_height=300
                 )
+        gr.Markdown(
+            "*Colour shows the stability band: green is stable, orange is moderately "
+            "stable, red is unstable, using the Akoglu (2018) thresholds.*"
+        )
+
+        gr.Markdown("### Per-regime feature importance")
+        with gr.Group():
+            per_regime_plot = gr.Plot(
+                label="Per-regime SHAP feature importance", show_label=False
+            )
+        gr.Markdown(
+            "*Colour shows the size of each feature's mean absolute SHAP value in that "
+            "regime, from dark (low) to yellow (high).*"
+        )
 
         gr.Markdown("### Global feature importance")
         with gr.Group():
@@ -148,29 +153,15 @@ with gr.Blocks(title="regime-shap demo") as demo:
                 label="Global feature importance (mean absolute SHAP)", wrap=True, max_height=300
             )
 
-        gr.Markdown("### Per-regime feature importance")
-        with gr.Group():
-            per_regime_plot = gr.Plot(
-                label="Per-regime SHAP feature importance", show_label=False
-            )
-
-        gr.Markdown("### Stability bands\nThese relabel the scores above; nothing recomputes.")
-        with gr.Group():
-            with gr.Row():
-                moderate = gr.Slider(0.0, 0.9, value=0.3, step=0.05, label="Moderate band above")
-                stable = gr.Slider(0.1, 1.0, value=0.6, step=0.05, label="Stable band above")
-
         gr.Markdown("### Interpretation")
         with gr.Group():
             interpretation = gr.Markdown()
 
-    inputs = [dataset, moderate, stable]
-    outputs = [heatmap, table, imp, per_regime_plot, interpretation]
+    inputs = [dataset]
+    outputs = [heatmap, table, per_regime_plot, imp, interpretation]
     run.click(analyse, inputs=inputs, outputs=outputs).then(
         lambda: gr.update(visible=True), outputs=results_group
     )
-    moderate.release(analyse, inputs=inputs, outputs=outputs)
-    stable.release(analyse, inputs=inputs, outputs=outputs)
 
 
 if __name__ == "__main__":
