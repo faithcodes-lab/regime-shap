@@ -132,22 +132,25 @@ with gr.Blocks(title="regime-shap demo") as demo:
         dataset = gr.Dropdown([FINANCE, ENERGY], value=FINANCE, label="Example")
         run = gr.Button("Run analysis", variant="primary")
 
-    with gr.Row():
-        heatmap = gr.Plot(label="Stability heatmap")
-        with gr.Column():
-            table = gr.Dataframe(label="Regime pairs and stability bands", wrap=True)
-            imp = gr.Dataframe(label="Global feature importance (mean absolute SHAP)", wrap=True)
+    with gr.Column(visible=False) as results_group:
+        with gr.Row():
+            heatmap = gr.Plot(label="Stability heatmap")
+            with gr.Column():
+                table = gr.Dataframe(label="Regime pairs and stability bands", wrap=True)
+                imp = gr.Dataframe(label="Global feature importance (mean absolute SHAP)", wrap=True)
 
-    gr.Markdown("### Stability bands\nThese relabel the scores above; nothing recomputes.")
-    with gr.Row():
-        moderate = gr.Slider(0.0, 0.9, value=0.3, step=0.05, label="Moderate band above")
-        stable = gr.Slider(0.1, 1.0, value=0.6, step=0.05, label="Stable band above")
+        gr.Markdown("### Stability bands\nThese relabel the scores above; nothing recomputes.")
+        with gr.Row():
+            moderate = gr.Slider(0.0, 0.9, value=0.3, step=0.05, label="Moderate band above")
+            stable = gr.Slider(0.1, 1.0, value=0.6, step=0.05, label="Stable band above")
 
-    interpretation = gr.Markdown()
+        interpretation = gr.Markdown()
 
     inputs = [dataset, moderate, stable]
     outputs = [heatmap, table, imp, interpretation]
-    run.click(analyse, inputs=inputs, outputs=outputs)
+    run.click(analyse, inputs=inputs, outputs=outputs).then(
+        lambda: gr.update(visible=True), outputs=results_group
+    )
     moderate.release(analyse, inputs=inputs, outputs=outputs)
     stable.release(analyse, inputs=inputs, outputs=outputs)
 
