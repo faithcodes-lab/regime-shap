@@ -104,6 +104,7 @@ def analyse(dataset: str, moderate_threshold: float, stable_threshold: float):
     an.stable_threshold = stable_threshold
 
     fig = an.plot_stability()
+    per_regime_fig = an.plot_per_regime()
     classified = an.stability_classified().round({"spearman_rho": 3})
     importance = an.global_importance().round(4).rename_axis("feature").reset_index()
 
@@ -116,7 +117,7 @@ def analyse(dataset: str, moderate_threshold: float, stable_threshold: float):
         "hand-labelled eras of UK demand history. Move the thresholds to see the bands "
         "reclassify."
     )
-    return fig, classified, importance, note
+    return fig, classified, importance, per_regime_fig, note
 
 
 with gr.Blocks(title="regime-shap demo") as demo:
@@ -133,21 +134,38 @@ with gr.Blocks(title="regime-shap demo") as demo:
         run = gr.Button("Run analysis", variant="primary")
 
     with gr.Column(visible=False) as results_group:
-        with gr.Row():
-            heatmap = gr.Plot(label="Stability heatmap")
-            with gr.Column():
-                table = gr.Dataframe(label="Regime pairs and stability bands", wrap=True)
-                imp = gr.Dataframe(label="Global feature importance (mean absolute SHAP)", wrap=True)
+        gr.Markdown("### Regime-pair stability")
+        with gr.Group():
+            with gr.Row():
+                heatmap = gr.Plot(label="Stability heatmap")
+                table = gr.Dataframe(
+                    label="Regime pairs and stability bands", wrap=True, max_height=300
+                )
+
+        gr.Markdown("### Global feature importance")
+        with gr.Group():
+            imp = gr.Dataframe(
+                label="Global feature importance (mean absolute SHAP)", wrap=True, max_height=300
+            )
+
+        gr.Markdown("### Per-regime feature importance")
+        with gr.Group():
+            per_regime_plot = gr.Plot(
+                label="Per-regime SHAP feature importance", show_label=False
+            )
 
         gr.Markdown("### Stability bands\nThese relabel the scores above; nothing recomputes.")
-        with gr.Row():
-            moderate = gr.Slider(0.0, 0.9, value=0.3, step=0.05, label="Moderate band above")
-            stable = gr.Slider(0.1, 1.0, value=0.6, step=0.05, label="Stable band above")
+        with gr.Group():
+            with gr.Row():
+                moderate = gr.Slider(0.0, 0.9, value=0.3, step=0.05, label="Moderate band above")
+                stable = gr.Slider(0.1, 1.0, value=0.6, step=0.05, label="Stable band above")
 
-        interpretation = gr.Markdown()
+        gr.Markdown("### Interpretation")
+        with gr.Group():
+            interpretation = gr.Markdown()
 
     inputs = [dataset, moderate, stable]
-    outputs = [heatmap, table, imp, interpretation]
+    outputs = [heatmap, table, imp, per_regime_plot, interpretation]
     run.click(analyse, inputs=inputs, outputs=outputs).then(
         lambda: gr.update(visible=True), outputs=results_group
     )
