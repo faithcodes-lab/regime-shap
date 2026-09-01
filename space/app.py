@@ -138,24 +138,19 @@ with gr.Blocks(title="regime-shap demo") as demo:
         )
 
         gr.Markdown("### Per-regime feature importance")
-        with gr.Group():
-            per_regime_plot = gr.Plot(
-                label="Per-regime SHAP feature importance", show_label=False
-            )
+        per_regime_plot = gr.Plot(label="Per-regime SHAP feature importance", show_label=False)
         gr.Markdown(
             "*Colour shows the size of each feature's mean absolute SHAP value in that "
             "regime, from dark (low) to yellow (high).*"
         )
 
         gr.Markdown("### Global feature importance")
-        with gr.Group():
-            imp = gr.Dataframe(
-                label="Global feature importance (mean absolute SHAP)", wrap=True, max_height=300
-            )
+        imp = gr.Dataframe(
+            label="Global feature importance (mean absolute SHAP)", wrap=True, max_height=300
+        )
 
         gr.Markdown("### Interpretation")
-        with gr.Group():
-            interpretation = gr.Markdown()
+        interpretation = gr.Markdown()
 
     inputs = [dataset]
     outputs = [heatmap, table, per_regime_plot, imp, interpretation]
