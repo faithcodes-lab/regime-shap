@@ -8,10 +8,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://faithcodes-lab.github.io/regime-shap/)
+[![Demo](https://img.shields.io/badge/demo-Hugging%20Face%20Spaces-blue.svg)](https://huggingface.co/spaces/FaithCodes/regime-shap-demo)
 
 **Install with `pip install regime-shap`. The package follows Semantic Versioning; during the 0.x series the public API may still change.**
 
-Documentation: <https://faithcodes-lab.github.io/regime-shap/>
+Documentation: <https://faithcodes-lab.github.io/regime-shap/> · Interactive demo: <https://huggingface.co/spaces/FaithCodes/regime-shap-demo>
 
 `regime-shap` extends SHAP feature importance analysis to time-series with structural breaks. Given a pre-trained tree model, a feature matrix, and a set of regimes, it quantifies how the model's feature importance rankings change across regimes, surfacing instability that may matter for trustworthy interpretation.
 
