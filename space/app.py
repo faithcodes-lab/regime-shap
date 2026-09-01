@@ -148,7 +148,6 @@ with gr.Blocks(title="regime-shap demo") as demo:
     inputs = [dataset, moderate, stable]
     outputs = [heatmap, table, imp, interpretation]
     run.click(analyse, inputs=inputs, outputs=outputs)
-    demo.load(analyse, inputs=inputs, outputs=outputs)  # show the finance result on open
     moderate.release(analyse, inputs=inputs, outputs=outputs)
     stable.release(analyse, inputs=inputs, outputs=outputs)
 
