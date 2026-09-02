@@ -177,49 +177,92 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         dataset = gr.Dropdown([FINANCE, ENERGY], value=FINANCE, label="Example dataset")
         run = gr.Button("Run analysis", variant="primary")
 
+    SLIDE_TITLES = [
+        "Feature glossary",
+        "Regime-pair stability",
+        "Per-regime feature importance",
+        "Global feature importance",
+        "Interpretation",
+    ]
+    N_SLIDES = len(SLIDE_TITLES)
+
     with gr.Column(visible=False) as results_group:
-        gr.Markdown("## Feature glossary")
-        glossary_table = gr.Dataframe(
-            label="What each variable means", wrap=True, max_height=340
-        )
+        slide_label = gr.Markdown()
 
-        gr.Markdown("---\n## Regime-pair stability")
-        with gr.Row(elem_classes="pair-row"):
-            heatmap = gr.Plot(label="Stability heatmap")
-            table = gr.Dataframe(
-                label="Regime pairs and stability bands", wrap=True, max_height=340
-            )
-        gr.Markdown(
-            "*Colour shows the stability band: green is stable, orange is moderately "
-            "stable, red is unstable, using the Akoglu (2018) thresholds.*"
-        )
-
-        gr.Markdown("---\n## Per-regime feature importance")
-        with gr.Row(elem_classes="pair-row"):
-            per_regime_plot = gr.Plot(
-                label="Per-regime SHAP feature importance", show_label=False
-            )
-            per_regime_table = gr.Dataframe(
-                label="Per-regime SHAP feature importance (mean absolute SHAP)",
-                wrap=True,
-                max_height=340,
-            )
-        gr.Markdown(
-            "*Colour shows the size of each feature's mean absolute SHAP value in "
-            "that regime, from dark (low) to yellow (high).*"
-        )
-
-        gr.Markdown("---\n## Global feature importance")
-        with gr.Row(elem_classes="pair-row"):
-            global_plot = gr.Plot(label="Global SHAP feature importance", show_label=False)
-            imp = gr.Dataframe(
-                label="Global feature importance (mean absolute SHAP)",
-                wrap=True,
-                max_height=340,
+        with gr.Column(visible=True) as slide_0:
+            gr.Markdown("## Feature glossary")
+            glossary_table = gr.Dataframe(
+                label="What each variable means", wrap=True, max_height=340
             )
 
-        gr.Markdown("---\n### Interpretation")
-        interpretation = gr.Markdown()
+        with gr.Column(visible=False) as slide_1:
+            gr.Markdown("## Regime-pair stability")
+            with gr.Row(elem_classes="pair-row"):
+                heatmap = gr.Plot(label="Stability heatmap")
+                table = gr.Dataframe(
+                    label="Regime pairs and stability bands", wrap=True, max_height=340
+                )
+            gr.Markdown(
+                "*Colour shows the stability band: green is stable, orange is moderately "
+                "stable, red is unstable, using the Akoglu (2018) thresholds.*"
+            )
+
+        with gr.Column(visible=False) as slide_2:
+            gr.Markdown("## Per-regime feature importance")
+            with gr.Row(elem_classes="pair-row"):
+                per_regime_plot = gr.Plot(
+                    label="Per-regime SHAP feature importance", show_label=False
+                )
+                per_regime_table = gr.Dataframe(
+                    label="Per-regime SHAP feature importance (mean absolute SHAP)",
+                    wrap=True,
+                    max_height=340,
+                )
+            gr.Markdown(
+                "*Colour shows the size of each feature's mean absolute SHAP value in "
+                "that regime, from dark (low) to yellow (high).*"
+            )
+
+        with gr.Column(visible=False) as slide_3:
+            gr.Markdown("## Global feature importance")
+            with gr.Row(elem_classes="pair-row"):
+                global_plot = gr.Plot(label="Global SHAP feature importance", show_label=False)
+                imp = gr.Dataframe(
+                    label="Global feature importance (mean absolute SHAP)",
+                    wrap=True,
+                    max_height=340,
+                )
+
+        with gr.Column(visible=False) as slide_4:
+            gr.Markdown("### Interpretation")
+            interpretation = gr.Markdown()
+
+        with gr.Row():
+            prev_btn = gr.Button("< Previous", interactive=False)
+            next_btn = gr.Button("Next >", variant="primary")
+
+        slide_idx = gr.State(0)
+
+    slides = [slide_0, slide_1, slide_2, slide_3, slide_4]
+
+    def _slide_label(idx: int) -> str:
+        return f"**Slide {idx + 1} of {N_SLIDES}: {SLIDE_TITLES[idx]}**"
+
+    def _go(idx: int, step: int):
+        new_idx = min(max(idx + step, 0), N_SLIDES - 1)
+        visibility = [gr.update(visible=(i == new_idx)) for i in range(N_SLIDES)]
+        nav_state = [gr.update(interactive=new_idx > 0), gr.update(interactive=new_idx < N_SLIDES - 1)]
+        return [new_idx, _slide_label(new_idx)] + visibility + nav_state
+
+    def go_next(idx: int):
+        return _go(idx, 1)
+
+    def go_prev(idx: int):
+        return _go(idx, -1)
+
+    nav_outputs = [slide_idx, slide_label] + slides + [prev_btn, next_btn]
+    next_btn.click(go_next, inputs=slide_idx, outputs=nav_outputs)
+    prev_btn.click(go_prev, inputs=slide_idx, outputs=nav_outputs)
 
     inputs = [dataset]
     outputs = [
@@ -232,8 +275,15 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         imp,
         interpretation,
     ]
+
+    def _reset_to_slide_0():
+        visibility = [gr.update(visible=(i == 0)) for i in range(N_SLIDES)]
+        nav_state = [gr.update(interactive=False), gr.update(interactive=True)]
+        return [gr.update(visible=True), 0, _slide_label(0)] + visibility + nav_state
+
     run.click(analyse, inputs=inputs, outputs=outputs).then(
-        lambda: gr.update(visible=True), outputs=results_group
+        _reset_to_slide_0,
+        outputs=[results_group, slide_idx, slide_label] + slides + [prev_btn, next_btn],
     )
 
 
