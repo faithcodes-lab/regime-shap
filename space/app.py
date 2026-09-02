@@ -169,8 +169,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         "# regime-shap\n"
         "Quantify how stable a tree model's SHAP feature importance is across regimes "
         "(distinct time periods such as structural breaks). Pick an example dataset and "
-        "run the analysis, it trains a fresh model and computes SHAP live, nothing is "
-        "precomputed except the regime boundaries themselves.\n\n"
+        "run the analysis, it trains a fresh model and computes SHAP live.\n\n"
         "Source: [github.com/faithcodes-lab/regime-shap](https://github.com/faithcodes-lab/regime-shap) "
         "· Docs: [faithcodes-lab.github.io/regime-shap](https://faithcodes-lab.github.io/regime-shap/)"
     )
