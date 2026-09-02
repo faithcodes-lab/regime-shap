@@ -27,6 +27,30 @@ ENERGY = "Energy: GB electricity demand"
 
 _XGB = dict(n_estimators=300, max_depth=4, learning_rate=0.05, subsample=0.8, random_state=42)
 
+GLOSSARY = {
+    FINANCE: {
+        "target (y)": "Next-day change in the VIX (the 'fear index')",
+        "vix": "The VIX level itself, market volatility index",
+        "vix_ma5": "5-day rolling average of VIX (smoothed short-term trend)",
+        "vix_ma20": "20-day rolling average of VIX (smoothed longer-term trend)",
+        "vix_mom5": "VIX's momentum, how much it's moved over the last 5 days",
+        "term_spread": "Gap between long- and short-term interest rates (a yield-curve signal)",
+        "dgs10": "The 10-year US Treasury yield",
+        "oil_chg5": "5-day change in oil price",
+        "oil_vol20": "20-day rolling volatility of oil price changes",
+    },
+    ENERGY: {
+        "target (y)": "Tomorrow's GB electricity demand",
+        "demand": "Today's GB electricity demand",
+        "demand_lag7": "Demand exactly 7 days ago (captures the weekly, weekday/weekend rhythm)",
+        "is_weekend": "1 if Saturday/Sunday, else 0",
+        "doy_sin": "Day-of-year as sine, encodes time-of-year as a smooth yearly cycle",
+        "doy_cos": "Day-of-year as cosine, paired with doy_sin to avoid a jump at New Year",
+        "wind": "Wind generation output on that day",
+        "solar": "Solar generation output on that day",
+    },
+}
+
 
 def _finance_analyzer() -> RegimeSHAPAnalyzer:
     raw = pd.read_csv(DATA / "market_regimes.csv", parse_dates=["date"]).set_index("date")
@@ -95,6 +119,10 @@ def _get(dataset: str) -> RegimeSHAPAnalyzer:
 def analyse(dataset: str):
     an = _get(dataset)
 
+    glossary = pd.DataFrame(
+        GLOSSARY[dataset].items(), columns=["feature", "what it means"]
+    )
+
     fig = an.plot_stability()
     per_regime_fig = an.plot_per_regime()
     # SHAP values come out as float32; round after casting to float64, otherwise the
@@ -120,7 +148,16 @@ def analyse(dataset: str):
         "Finance regimes are found automatically with `detect_breaks`; energy regimes are "
         "hand-labelled eras of UK demand history."
     )
-    return fig, classified, per_regime_fig, per_regime_table, global_fig, importance, note
+    return (
+        glossary,
+        fig,
+        classified,
+        per_regime_fig,
+        per_regime_table,
+        global_fig,
+        importance,
+        note,
+    )
 
 
 _CSS = """
@@ -142,7 +179,12 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         run = gr.Button("Run analysis", variant="primary")
 
     with gr.Column(visible=False) as results_group:
-        gr.Markdown("## Regime-pair stability")
+        gr.Markdown("## Feature glossary")
+        glossary_table = gr.Dataframe(
+            label="What each variable means", wrap=True, max_height=340
+        )
+
+        gr.Markdown("---\n## Regime-pair stability")
         with gr.Row(elem_classes="pair-row"):
             heatmap = gr.Plot(label="Stability heatmap")
             table = gr.Dataframe(
@@ -181,7 +223,16 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         interpretation = gr.Markdown()
 
     inputs = [dataset]
-    outputs = [heatmap, table, per_regime_plot, per_regime_table, global_plot, imp, interpretation]
+    outputs = [
+        glossary_table,
+        heatmap,
+        table,
+        per_regime_plot,
+        per_regime_table,
+        global_plot,
+        imp,
+        interpretation,
+    ]
     run.click(analyse, inputs=inputs, outputs=outputs).then(
         lambda: gr.update(visible=True), outputs=results_group
     )
