@@ -97,6 +97,7 @@ def analyse(dataset: str):
 
     fig = an.plot_stability()
     per_regime_fig = an.plot_per_regime()
+    per_regime_table = an.per_regime_importance().round(4).rename_axis("feature").reset_index()
     classified = an.stability_classified().round({"spearman_rho": 3})
     importance = an.global_importance().round(4).rename_axis("feature").reset_index()
 
@@ -108,7 +109,7 @@ def analyse(dataset: str):
         "Finance regimes are found automatically with `detect_breaks`; energy regimes are "
         "hand-labelled eras of UK demand history."
     )
-    return fig, classified, per_regime_fig, importance, note
+    return fig, classified, per_regime_fig, per_regime_table, importance, note
 
 
 with gr.Blocks(title="regime-shap demo") as demo:
@@ -126,12 +127,10 @@ with gr.Blocks(title="regime-shap demo") as demo:
 
     with gr.Column(visible=False) as results_group:
         gr.Markdown("### Regime-pair stability")
-        with gr.Group():
-            with gr.Row():
-                heatmap = gr.Plot(label="Stability heatmap")
-                table = gr.Dataframe(
-                    label="Regime pairs and stability bands", wrap=True, max_height=300
-                )
+        heatmap = gr.Plot(label="Stability heatmap")
+        table = gr.Dataframe(
+            label="Regime pairs and stability bands", wrap=True, max_height=300
+        )
         gr.Markdown(
             "*Colour shows the stability band: green is stable, orange is moderately "
             "stable, red is unstable, using the Akoglu (2018) thresholds.*"
@@ -139,6 +138,11 @@ with gr.Blocks(title="regime-shap demo") as demo:
 
         gr.Markdown("### Per-regime feature importance")
         per_regime_plot = gr.Plot(label="Per-regime SHAP feature importance", show_label=False)
+        per_regime_table = gr.Dataframe(
+            label="Per-regime SHAP feature importance (mean absolute SHAP)",
+            wrap=True,
+            max_height=300,
+        )
         gr.Markdown(
             "*Colour shows the size of each feature's mean absolute SHAP value in that "
             "regime, from dark (low) to yellow (high).*"
@@ -153,7 +157,7 @@ with gr.Blocks(title="regime-shap demo") as demo:
         interpretation = gr.Markdown()
 
     inputs = [dataset]
-    outputs = [heatmap, table, per_regime_plot, imp, interpretation]
+    outputs = [heatmap, table, per_regime_plot, per_regime_table, imp, interpretation]
     run.click(analyse, inputs=inputs, outputs=outputs).then(
         lambda: gr.update(visible=True), outputs=results_group
     )
