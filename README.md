@@ -18,7 +18,7 @@ Documentation: <https://faithcodes-lab.github.io/regime-shap/> · Interactive de
 
 ## Development status
 
-Built so far:
+The package provides:
 - `breaks`: turn regime specifications into per-row regime labels (plus optional break detection).
 - `compare`: per-regime SHAP feature importance and rankings, with small-sample flagging.
 - `stability`: pairwise Spearman stability matrix, Akoglu (2018) bands, and bootstrap confidence intervals.
