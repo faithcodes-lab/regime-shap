@@ -6,7 +6,8 @@ The fastest ways to go from zero to a stability heatmap. Pick whichever suits yo
 
 Open the live demo and explore two built-in examples:
 [regime-shap demo on Hugging Face Spaces](https://huggingface.co/spaces/FaithCodes/regime-shap-demo).
-Adjust the stability thresholds and read the regime-by-regime heatmap without installing anything.
+Pick a dataset, run the analysis, and step through the regime-by-regime stability heatmap without
+installing anything.
 
 ## 2. Install and run on your own data
 
