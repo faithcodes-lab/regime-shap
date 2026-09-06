@@ -162,7 +162,7 @@ def analyse(dataset: str):
 
 _CSS = """
 .pair-row { align-items: flex-start !important; }
-.gradio-container { padding-bottom: 70px !important; }
+.gradio-container { padding-bottom: 200px !important; }
 .nav-row {
     position: fixed !important;
     bottom: 0;
@@ -203,7 +203,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         with gr.Column(visible=True) as slide_0:
             gr.Markdown("## Feature glossary")
             glossary_table = gr.Dataframe(
-                label="What each variable means", wrap=True, max_height=340
+                label="What each variable means", wrap=True
             )
 
         with gr.Column(visible=False) as slide_1:
