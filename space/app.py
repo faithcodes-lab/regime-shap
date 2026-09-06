@@ -260,9 +260,11 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
     def go_prev(idx: int):
         return _go(idx, -1)
 
+    _SCROLL_TOP_JS = "() => { window.scrollTo(0, 0); }"
+
     nav_outputs = [slide_idx, slide_label] + slides + [prev_btn, next_btn]
-    next_btn.click(go_next, inputs=slide_idx, outputs=nav_outputs)
-    prev_btn.click(go_prev, inputs=slide_idx, outputs=nav_outputs)
+    next_btn.click(go_next, inputs=slide_idx, outputs=nav_outputs, js=_SCROLL_TOP_JS)
+    prev_btn.click(go_prev, inputs=slide_idx, outputs=nav_outputs, js=_SCROLL_TOP_JS)
 
     inputs = [dataset]
     outputs = [
