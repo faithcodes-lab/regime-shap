@@ -162,6 +162,7 @@ def analyse(dataset: str):
 
 _CSS = """
 .pair-row { align-items: flex-start !important; }
+.gradio-container { padding-bottom: 70px !important; }
 .nav-row {
     position: fixed !important;
     bottom: 0;
@@ -183,7 +184,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         "Source: [github.com/faithcodes-lab/regime-shap](https://github.com/faithcodes-lab/regime-shap) "
         "· Docs: [faithcodes-lab.github.io/regime-shap](https://faithcodes-lab.github.io/regime-shap/)"
     )
-    with gr.Row():
+    with gr.Row(visible=True) as controls_row:
         dataset = gr.Dropdown([FINANCE, ENERGY], value=FINANCE, label="Example dataset")
         run = gr.Button("Run analysis", variant="primary")
 
@@ -262,7 +263,8 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         new_idx = min(max(idx + step, 0), N_SLIDES - 1)
         visibility = [gr.update(visible=(i == new_idx)) for i in range(N_SLIDES)]
         nav_state = [gr.update(interactive=new_idx > 0), gr.update(interactive=new_idx < N_SLIDES - 1)]
-        return [new_idx, _slide_label(new_idx)] + visibility + nav_state
+        controls_state = [gr.update(visible=(new_idx == 0))]
+        return [new_idx, _slide_label(new_idx)] + visibility + nav_state + controls_state
 
     def go_next(idx: int):
         return _go(idx, 1)
@@ -270,7 +272,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
     def go_prev(idx: int):
         return _go(idx, -1)
 
-    nav_outputs = [slide_idx, slide_label] + slides + [prev_btn, next_btn]
+    nav_outputs = [slide_idx, slide_label] + slides + [prev_btn, next_btn, controls_row]
     next_btn.click(go_next, inputs=slide_idx, outputs=nav_outputs)
     prev_btn.click(go_prev, inputs=slide_idx, outputs=nav_outputs)
 
@@ -289,11 +291,12 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
     def _reset_to_slide_0():
         visibility = [gr.update(visible=(i == 0)) for i in range(N_SLIDES)]
         nav_state = [gr.update(interactive=False), gr.update(interactive=True)]
-        return [gr.update(visible=True), 0, _slide_label(0)] + visibility + nav_state
+        controls_state = [gr.update(visible=True)]
+        return [gr.update(visible=True), 0, _slide_label(0)] + visibility + nav_state + controls_state
 
     run.click(analyse, inputs=inputs, outputs=outputs).then(
         _reset_to_slide_0,
-        outputs=[results_group, slide_idx, slide_label] + slides + [prev_btn, next_btn],
+        outputs=[results_group, slide_idx, slide_label] + slides + [prev_btn, next_btn, controls_row],
     )
 
 
