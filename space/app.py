@@ -162,6 +162,16 @@ def analyse(dataset: str):
 
 _CSS = """
 .pair-row { align-items: flex-start !important; }
+.nav-row {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--background-fill-primary);
+    border-top: 1px solid var(--border-color-primary);
+    padding: 10px 20px !important;
+    z-index: 999;
+}
 """
 
 with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
@@ -237,7 +247,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
             gr.Markdown("### Interpretation")
             interpretation = gr.Markdown()
 
-        with gr.Row():
+        with gr.Row(elem_classes="nav-row"):
             prev_btn = gr.Button("< Previous", interactive=False)
             next_btn = gr.Button("Next >", variant="primary")
 
