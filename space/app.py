@@ -162,17 +162,6 @@ def analyse(dataset: str):
 
 _CSS = """
 .pair-row { align-items: flex-start !important; }
-.gradio-container { padding-bottom: 200px !important; }
-.nav-row {
-    position: fixed !important;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--background-fill-primary);
-    border-top: 1px solid var(--border-color-primary);
-    padding: 10px 20px !important;
-    z-index: 999;
-}
 """
 
 with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
@@ -184,7 +173,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         "Source: [github.com/faithcodes-lab/regime-shap](https://github.com/faithcodes-lab/regime-shap) "
         "· Docs: [faithcodes-lab.github.io/regime-shap](https://faithcodes-lab.github.io/regime-shap/)"
     )
-    with gr.Row(visible=True) as controls_row:
+    with gr.Row():
         dataset = gr.Dropdown([FINANCE, ENERGY], value=FINANCE, label="Example dataset")
         run = gr.Button("Run analysis", variant="primary")
 
@@ -203,7 +192,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         with gr.Column(visible=True) as slide_0:
             gr.Markdown("## Feature glossary")
             glossary_table = gr.Dataframe(
-                label="What each variable means", wrap=True
+                label="What each variable means", wrap=True, max_height=340
             )
 
         with gr.Column(visible=False) as slide_1:
@@ -248,7 +237,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
             gr.Markdown("### Interpretation")
             interpretation = gr.Markdown()
 
-        with gr.Row(elem_classes="nav-row"):
+        with gr.Row():
             prev_btn = gr.Button("< Previous", interactive=False)
             next_btn = gr.Button("Next >", variant="primary")
 
@@ -263,8 +252,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
         new_idx = min(max(idx + step, 0), N_SLIDES - 1)
         visibility = [gr.update(visible=(i == new_idx)) for i in range(N_SLIDES)]
         nav_state = [gr.update(interactive=new_idx > 0), gr.update(interactive=new_idx < N_SLIDES - 1)]
-        controls_state = [gr.update(visible=(new_idx == 0))]
-        return [new_idx, _slide_label(new_idx)] + visibility + nav_state + controls_state
+        return [new_idx, _slide_label(new_idx)] + visibility + nav_state
 
     def go_next(idx: int):
         return _go(idx, 1)
@@ -272,7 +260,7 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
     def go_prev(idx: int):
         return _go(idx, -1)
 
-    nav_outputs = [slide_idx, slide_label] + slides + [prev_btn, next_btn, controls_row]
+    nav_outputs = [slide_idx, slide_label] + slides + [prev_btn, next_btn]
     next_btn.click(go_next, inputs=slide_idx, outputs=nav_outputs)
     prev_btn.click(go_prev, inputs=slide_idx, outputs=nav_outputs)
 
@@ -291,12 +279,11 @@ with gr.Blocks(title="regime-shap demo", css=_CSS) as demo:
     def _reset_to_slide_0():
         visibility = [gr.update(visible=(i == 0)) for i in range(N_SLIDES)]
         nav_state = [gr.update(interactive=False), gr.update(interactive=True)]
-        controls_state = [gr.update(visible=True)]
-        return [gr.update(visible=True), 0, _slide_label(0)] + visibility + nav_state + controls_state
+        return [gr.update(visible=True), 0, _slide_label(0)] + visibility + nav_state
 
     run.click(analyse, inputs=inputs, outputs=outputs).then(
         _reset_to_slide_0,
-        outputs=[results_group, slide_idx, slide_label] + slides + [prev_btn, next_btn, controls_row],
+        outputs=[results_group, slide_idx, slide_label] + slides + [prev_btn, next_btn],
     )
 
 
